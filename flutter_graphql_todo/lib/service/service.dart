@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_graphql_todo/todo.dart';
+import 'package:flutter_graphql_todo/model/todo.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphService {
@@ -11,7 +11,7 @@ class GraphService {
 
   static get getInstance {
     if (_instance == null) {
-      final HttpLink httpLink = HttpLink(uri: "http://localhost:8080");
+      final HttpLink httpLink = HttpLink(uri: "http://10.0.2.2:8080/query");
 
       ValueNotifier<GraphQLClient> client =
           ValueNotifier(GraphQLClient(cache: InMemoryCache(), link: httpLink));

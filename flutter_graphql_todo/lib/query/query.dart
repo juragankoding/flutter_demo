@@ -1,4 +1,4 @@
-import 'package:flutter_graphql_todo/todo.dart';
+import 'package:flutter_graphql_todo/model/todo.dart';
 
 class QueryTodo {
   String queryTodos() {
@@ -11,9 +11,9 @@ class QueryTodo {
     ''';
   }
 
-  String querySingleTopo(int id) {
+  String querySingleTopo() {
     return '''
-    singleTodo(id: $id){
+    singleTodo(id: \$id){
       id
       text
       done
@@ -21,9 +21,9 @@ class QueryTodo {
     ''';
   }
 
-  String mutationCreateTodo(Todo todo) {
+  String mutationCreateTodo() {
     return '''
-    createTodo(input: {id: "${todo.id}", text:"${todo.text}", done:${todo.done}}){
+    createTodo(input: {text: \$text}){
       id
       text
       done
@@ -41,10 +41,18 @@ class QueryTodo {
     ''';
   }
 
-  String mutationDeleteTodo(int i) {
+  String mutationUpdateStatusTodo() {
     return '''
-    deleteTodo(id: "$i"){
-      message
+    updateStatusTodo(id: \$id){
+      Message
+    }
+    ''';
+  }
+
+  String mutationDeleteTodo() {
+    return '''
+    deleteTodo(id: \$id){
+      Message
     }
     ''';
   }

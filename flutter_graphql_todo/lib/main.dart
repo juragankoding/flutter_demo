@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_graphql_todo/query.dart';
-import 'package:flutter_graphql_todo/service.dart';
-import 'package:flutter_graphql_todo/todo.dart';
+import 'package:flutter_graphql_todo/component/form_todo.dart';
+import 'package:flutter_graphql_todo/component/list_todo.dart';
+import 'package:flutter_graphql_todo/query/query.dart';
+import 'package:flutter_graphql_todo/service/service.dart';
+import 'package:flutter_graphql_todo/model/todo.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() {
@@ -18,70 +22,63 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {}
+  GlobalKey globalKey = GlobalKey();
+  GlobalKey<ListTodotate> globalKeyList = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
       client: GraphService.getInstance.client,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Query(
-            options: QueryOptions(documentNode: gql('''
-          query{
-            ${QueryTodo().queryTodos()}
-          }
-          ''')),
-            builder: (QueryResult result,
-                {VoidCallback refetch, FetchMore fetchMore}) {
-              if (result.hasException) {
-                return Container(
-                  child: Text(result.exception.clientException.message),
-                );
-              }
-
-              List<Todo> todos = List<Todo>();
-
-              for (var jsonTodo in result.data) {
-                todos.add(Todo.generateTodo(jsonTodo));
-              }
-
-              return Container(
-                  child: ListView.builder(
-                itemCount: todos.length,
-                itemBuilder: (context, id) {
-                  return Container(
-                    child: Text(id.toString()),
-                  );
-                },
-              ));
-            },
+          body: Container(
+            margin: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      Text(
+                        "Todos",
+                        style: TextStyle(
+                          color: Colors.purple[300],
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Center(
+                  child: ListTodo(
+                    key: globalKeyList,
+                  ),
+                ))
+              ],
+            ),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-      ),
+          floatingActionButton: FormTodo(globalKeyList: this.globalKeyList)),
     );
   }
 }

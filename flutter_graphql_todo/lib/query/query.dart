@@ -31,9 +31,9 @@ class QueryTodo {
     ''';
   }
 
-  String mutationUpdateTodo(Todo todo) {
+  String mutationUpdateTodo() {
     return '''
-    updateTodo(input: {id: "${todo.id}", text:"${todo.text}", done:${todo.done}}){
+    updateTodo(input: {id: \$id, text: \$text, done: \$done}){
       id
       text
       done

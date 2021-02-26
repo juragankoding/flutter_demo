@@ -39,6 +39,10 @@ class InheritedWidgetKontakTeman extends InheritedWidget {
 
   List<ModelKontakTeman> listModelKontakTeman = List();
 
+  void tambah(ModelKontakTeman kontakTeman) {
+    this.listModelKontakTeman.add(kontakTeman);
+  }
+
   static InheritedWidgetKontakTeman of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<InheritedWidgetKontakTeman>();
@@ -59,6 +63,82 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController textEditController,
+      emailEditController,
+      noTeleponEditController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    this.textEditController = TextEditingController();
+    this.emailEditController = TextEditingController();
+    this.noTeleponEditController = TextEditingController();
+  }
+
+  void showInputKontak() {
+    showDialog(
+        context: context,
+        child: AlertDialog(
+          content: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Input nama teman kamu?",
+                    style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
+                  ),
+                  TextField(
+                      controller: this.textEditController,
+                      style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
+                      cursorColor: Colors.black),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Input nomor kontak teman kamu?",
+                    style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
+                  ),
+                  TextField(
+                      controller: this.noTeleponEditController,
+                      style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
+                      cursorColor: Colors.black),
+                  Text(
+                    "Input email kontak teman kamu?",
+                    style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
+                  ),
+                  TextField(
+                      controller: this.emailEditController,
+                      style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
+                      cursorColor: Colors.black),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            MaterialButton(
+              onPressed: () {
+                InheritedWidgetKontakTeman.of(context).tambah(ModelKontakTeman(
+                  email: this.emailEditController.text,
+                  nama: this.textEditController.text,
+                  noTelepon: this.noTeleponEditController.text,
+                ));
+
+                this.emailEditController.text = "";
+                this.textEditController.text = "";
+                this.noTeleponEditController.text = "";
+              },
+              color: Theme.of(context).accentColor,
+              child: Text("Tambahkan"),
+            )
+          ],
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return InheritedWidgetKontakTeman(
@@ -67,17 +147,26 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Builder(
         builder: (BuildContext innerContext) {
           return Scaffold(
+            appBar: AppBar(
+              title: Text("Kontak Teman"),
+            ),
             body: ListView(
               children: List<Widget>.generate(
                   InheritedWidgetKontakTeman.of(innerContext)
                       .listModelKontakTeman
                       .length, (index) {
-                return Container();
+                return Container(
+                  child: Text(InheritedWidgetKontakTeman.of(innerContext)
+                      .listModelKontakTeman[index]
+                      .nama),
+                );
               }),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              child: Icon(aweson),
+              onPressed: this.showInputKontak,
+              child: Icon(
+                Icons.plus_one,
+              ),
             ),
           );
         },

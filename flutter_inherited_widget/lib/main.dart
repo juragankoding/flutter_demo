@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inheritWidget/modal/kontak_teman.dart';
+import 'package:inheritWidget/model/kontak_teman.dart';
 import 'package:inheritWidget/widget/home.dart';
 import 'package:inheritWidget/widget/inherited_kontak_teman.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         ),
         home: InheritedWidgetKontakTeman(
             key: Key("TemanKontak"),
-            listModelKontakTeman: List<ModelKontakTeman>(),
+            listModelKontakTeman: List<ModelKontakTeman>()..addAll([]),
             child: Builder(
               builder: (context) {
                 return MyHomePage(title: 'Flutter Demo Home Page');

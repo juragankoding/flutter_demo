@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:inheritWidget/modal/kontak_teman.dart';
+import 'package:inheritWidget/model/kontak_teman.dart';
 
 class InheritedWidgetKontakTeman extends InheritedWidget {
   InheritedWidgetKontakTeman({
@@ -19,6 +21,10 @@ class InheritedWidgetKontakTeman extends InheritedWidget {
 
   void hapus(int index) {
     this.listModelKontakTeman.removeAt(index);
+  }
+
+  void ubah(int index, ModelKontakTeman modelKontakTeman) {
+    this.listModelKontakTeman[index] = modelKontakTeman;
   }
 
   static InheritedWidgetKontakTeman of(BuildContext context) {

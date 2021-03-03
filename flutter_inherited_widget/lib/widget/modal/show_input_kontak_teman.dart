@@ -9,12 +9,10 @@ Future<void> showInputKontak(State state, {ModelKontakTeman modelKontakTeman}) {
       InheritedWidgetKontakTeman.of(innerContext);
 
   TextEditingController textEditController = TextEditingController();
-  TextEditingController emailEditController = TextEditingController();
   TextEditingController noTeleponEditController = TextEditingController();
 
   if (modelKontakTeman != null) {
     textEditController.text = modelKontakTeman.nama;
-    emailEditController.text = modelKontakTeman.email;
     noTeleponEditController.text = modelKontakTeman.noTelepon;
   }
 
@@ -52,15 +50,6 @@ Future<void> showInputKontak(State state, {ModelKontakTeman modelKontakTeman}) {
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "Input email kontak teman kamu?",
-                  style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
-                ),
-                TextField(
-                    controller: emailEditController,
-                    style: TextStyle(fontSize: 12, fontFamily: "Tahoma"),
-                    decoration: inputDecoration,
-                    cursorColor: Colors.black),
               ],
             ),
           ),
@@ -73,19 +62,16 @@ Future<void> showInputKontak(State state, {ModelKontakTeman modelKontakTeman}) {
                     inheritedWidgetKontakTeman.listModelKontakTeman
                         .indexOf(modelKontakTeman),
                     ModelKontakTeman(
-                      email: emailEditController.text,
                       nama: textEditController.text,
                       noTelepon: noTeleponEditController.text,
                     ));
               } else {
                 inheritedWidgetKontakTeman.tambah(ModelKontakTeman(
-                  email: emailEditController.text,
                   nama: textEditController.text,
                   noTelepon: noTeleponEditController.text,
                 ));
               }
 
-              emailEditController.text = "";
               textEditController.text = "";
               noTeleponEditController.text = "";
 
